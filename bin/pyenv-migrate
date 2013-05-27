@@ -48,8 +48,10 @@ pyenv-prefix "$dst" 1>/dev/null 2>&1 || {
 }
 
 STATUS=0
-PYENV_VERSION="$src" pyenv-exec pip freeze >> "${requirements}"
-PYENV_VERSION="$dst" pyenv-exec pip install --requirement "${requirements}" || STATUS=$?
+{
+  PYENV_VERSION="${src}" pyenv-exec pip freeze >> "${requirements}" && \
+  PYENV_VERSION="${dst}" pyenv-exec pip install --requirement "${requirements}"
+} || STATUS=$?
 
 if [ "$STATUS" == "0" ]; then
   pyenv-rehash
