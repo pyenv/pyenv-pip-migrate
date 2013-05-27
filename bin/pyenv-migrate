@@ -25,12 +25,12 @@ usage() {
 
 requirements="$(mktemp "/tmp/requirements.XXXX.txt")"
 
-# Plan cleanup on unsuccessful installation.
+# Plan cleanup on successful/unsuccessful migration.
 cleanup() {
-  [ -z "${requirements}" ] && rm -rf "$requirements"
+  rm -rf "$requirements"
 }
 
-trap cleanup SIGINT
+trap cleanup SIGINT SIGTERM EXIT
 
 src="$1"
 dst="$2"
@@ -38,12 +38,12 @@ dst="$2"
 [ -n "$dst" ] || usage 1
 
 pyenv-prefix "$src" 1>/dev/null 2>&1 || {
-  echo "pyenv: not a installed version: $src" 1>&2
+  echo "pyenv: not an installed version: $src" 1>&2
   usage 1
 }
 
 pyenv-prefix "$dst" 1>/dev/null 2>&1 || {
-  echo "pyenv: not a installed version: $dst" 1>&2
+  echo "pyenv: not an installed version: $dst" 1>&2
   usage 1
 }
 
@@ -53,8 +53,6 @@ PYENV_VERSION="$dst" pyenv-exec pip install --requirement "${requirements}" || S
 
 if [ "$STATUS" == "0" ]; then
   pyenv-rehash
-else
-  cleanup
 fi
 
 exit "$STATUS"
