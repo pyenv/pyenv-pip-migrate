@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+#
+# Summary: Migrate pip packages from a Python version to another
+#
+# Usage: pyenv migrate <from> <to>
+#
+
+set -e
+[ -n "$PYENV_DEBUG" ] && set -x
+
+# Provide pyenv completions
+if [ "$1" = "--complete" ]; then
+  exec pyenv-versions --bare
+fi
+
+if [ -z "$PYENV_ROOT" ]; then
+  PYENV_ROOT="${HOME}/.pyenv"
+fi
+
+usage() {
+  # We can remove the sed fallback once pyenv 0.2.0 is widely available.
+  pyenv-help migrate 2>/dev/null || sed -ne '/^#/!q;s/.//;s/.//;1,4d;p' < "$0"
+  [ -z "$1" ] || exit "$1"
+}
+
+requirements="$(mktemp "/tmp/requirements.XXXX.txt")"
+
+# Plan cleanup on unsuccessful installation.
+cleanup() {
+  [ -z "${requirements}" ] && rm -rf "$requirements"
+}
+
+trap cleanup SIGINT
+
+src="$1"
+dst="$2"
+[ -n "$src" ] || usage 1
+[ -n "$dst" ] || usage 1
+
+pyenv-prefix "$src" 1>/dev/null 2>&1 || {
+  echo "pyenv: not a installed version: $src" 1>&2
+  usage 1
+}
+
+pyenv-prefix "$dst" 1>/dev/null 2>&1 || {
+  echo "pyenv: not a installed version: $dst" 1>&2
+  usage 1
+}
+
+STATUS=0
+PYENV_VERSION="$src" pyenv-exec pip freeze >> "${requirements}"
+PYENV_VERSION="$dst" pyenv-exec pip install --requirement "${requirements}" || STATUS=$?
+
+if [ "$STATUS" == "0" ]; then
+  pyenv-rehash
+else
+  cleanup
+fi
+
+exit "$STATUS"
