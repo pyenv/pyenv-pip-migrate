@@ -23,14 +23,14 @@ usage() {
   [ -z "$1" ] || exit "$1"
 }
 
-requirements="$(mktemp "/tmp/requirements.XXXX.txt")"
-
-# Plan cleanup on successful/unsuccessful migration.
-cleanup() {
-  rm -rf "$requirements"
+migration_failed() {
+  { echo
+    echo "MIGRATION FAILED"
+    echo
+    echo "Inspect or clean up the package list at ${PIP_REQUIREMENTS}"
+  } 1>&2
+  exit 1
 }
-
-trap cleanup SIGINT SIGTERM EXIT
 
 src="$1"
 dst="$2"
@@ -47,14 +47,19 @@ pyenv-prefix "$dst" 1>/dev/null 2>&1 || {
   usage 1
 }
 
-STATUS=0
-{
-  PYENV_VERSION="${src}" pyenv-exec pip freeze >> "${requirements}" && \
-  PYENV_VERSION="${dst}" pyenv-exec pip install --requirement "${requirements}"
-} || STATUS=$?
-
-if [ "$STATUS" == "0" ]; then
-  pyenv-rehash
+if [ -z "$TMPDIR" ]; then
+  TMP="/tmp"
+else
+  TMP="${TMPDIR%/}"
 fi
 
-exit "$STATUS"
+SEED="$(date "+%Y%m%d%H%M%S").$$"
+LOG_PATH="${TMP}/python-build.${SEED}.log"
+PIP_REQUIREMENTS="${TMP}/requirements.${SEED}.txt"
+
+trap migration_failed ERR
+PYENV_VERSION="${src}" pyenv-exec pip freeze >> "${PIP_REQUIREMENTS}"
+PYENV_VERSION="${dst}" pyenv-exec pip install --requirement "${PIP_REQUIREMENTS}"
+pyenv-rehash
+rm -f "${PIP_REQUIREMENTS}"
+trap - ERR
