@@ -18,6 +18,27 @@ the `~/.pyenv/plugins/pyenv-pip-migrate` directory. From that directory, you
 can check out a specific release tag. To update pyenv-pip-migrate, run `git
 pull` to download the latest changes.
 
+
+### Installing with Homebrew (for OS X users)
+
+Mac OS X users can install pyenv-pip-migrate with the
+[Homebrew](http://brew.sh) package manager.
+This will give you access to the `pyenv-migrate` command. If you have pyenv
+installed, you will also be able to use the `pyenv migrate` command.
+
+*This is the recommended method of installation if you installed pyenv
+ with Homebrew.*
+
+```
+$ brew install pyenv-pip-migrate
+```
+
+Or, if you would like to install the latest development release:
+
+```
+$ brew install --HEAD pyenv-pip-migrate
+```
+
 ## Usage
 
 ### Using `pyenv migrate` with pyenv
