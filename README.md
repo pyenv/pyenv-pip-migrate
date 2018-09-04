@@ -11,10 +11,10 @@ version to another.
 Installing pyenv-pip-migrate as a pyenv plugin will give you access to the
 `pyenv migrate` command.
 
-    $ git clone git://github.com/yyuu/pyenv-pip-migrate.git ~/.pyenv/plugins/pyenv-pip-migrate
+    $ git clone git://github.com/yyuu/pyenv-pip-migrate.git $(pyenv root)/plugins/pyenv-pip-migrate
 
 This will install the latest development version of pyenv-pip-migrate into
-the `~/.pyenv/plugins/pyenv-pip-migrate` directory. From that directory, you
+the `$(pyenv root)/plugins/pyenv-pip-migrate` directory. From that directory, you
 can check out a specific release tag. To update pyenv-pip-migrate, run `git
 pull` to download the latest changes.
 
