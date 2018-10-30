@@ -73,7 +73,7 @@ To migrate installed packages from `2.7.4` to `2.7.5`, use `pyenv migrate`.
 
 ### License
 
-(The MIT License)](LICENSE)
+[(The MIT License)](LICENSE)
 
 * Copyright (c) 2013 Yamashita, Yuu
 
