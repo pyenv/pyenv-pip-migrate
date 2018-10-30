@@ -19,9 +19,9 @@ can check out a specific release tag. To update pyenv-pip-migrate, run `git
 pull` to download the latest changes.
 
 
-### Installing with Homebrew (for OS X users)
+### Installing with Homebrew (for macOS users)
 
-Mac OS X users can install pyenv-pip-migrate with the
+macOS users can install pyenv-pip-migrate with the
 [Homebrew](http://brew.sh) package manager.
 This will give you access to the `pyenv-migrate` command. If you have pyenv
 installed, you will also be able to use the `pyenv migrate` command.
@@ -73,7 +73,7 @@ To migrate installed packages from `2.7.4` to `2.7.5`, use `pyenv migrate`.
 
 ### License
 
-(The MIT License)
+(The MIT License)](LICENSE)
 
 * Copyright (c) 2013 Yamashita, Yuu
 
