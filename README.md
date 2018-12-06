@@ -1,6 +1,6 @@
 # pyenv-pip-migrate
 
-pyenv-pip-migrate is a [pyenv](https://github.com/yyuu/pyenv) plugin
+pyenv-pip-migrate is a [pyenv](https://github.com/pyenv/pyenv) plugin
 that provides a `pyenv migrate` command to migrate pip package from a Python
 version to another.
 
@@ -11,7 +11,7 @@ version to another.
 Installing pyenv-pip-migrate as a pyenv plugin will give you access to the
 `pyenv migrate` command.
 
-    $ git clone git://github.com/yyuu/pyenv-pip-migrate.git $(pyenv root)/plugins/pyenv-pip-migrate
+    $ git clone git://github.com/pyenv/pyenv-pip-migrate.git $(pyenv root)/plugins/pyenv-pip-migrate
 
 This will install the latest development version of pyenv-pip-migrate into
 the `$(pyenv root)/plugins/pyenv-pip-migrate` directory. From that directory, you
