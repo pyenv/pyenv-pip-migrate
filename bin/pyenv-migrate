@@ -58,6 +58,7 @@ LOG_PATH="${TMP}/python-build.${SEED}.log"
 PIP_REQUIREMENTS="${TMP}/requirements.${SEED}.txt"
 
 trap migration_failed ERR
+# Run Pip via -m as a workaround to reduce breakage from https://github.com/pyenv/pyenv/issues/2417
 PYENV_VERSION="${src}" pyenv-exec python -m pip freeze >> "${PIP_REQUIREMENTS}"
 PYENV_VERSION="${dst}" pyenv-exec python -m pip install --requirement "${PIP_REQUIREMENTS}"
 pyenv-rehash
